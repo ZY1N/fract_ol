@@ -1,0 +1,1 @@
+cc -L minilibx_macos/ -I minilibx_macros/ -lmlx -framework OpenGL -framework AppKit main.c
