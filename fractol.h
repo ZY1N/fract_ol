@@ -28,4 +28,17 @@ typedef struct mandel{
     double imaginaryMax;
 } mandel;
 
+typedef struct colors{
+    int red;
+    int green;
+    int blue;
+} colors;
+
+typedef struct package{
+    void *mlx_ptr;
+    void *win_ptr;
+    mandel *mainMandel;
+    colors *palette;
+} package;
+
 #endif

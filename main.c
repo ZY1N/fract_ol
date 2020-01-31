@@ -12,11 +12,6 @@
 
 #include "fractol.h"
 
-void	julia_driver()
-{
-	printf("greysama\n");
-}
-
 double mapToReal(int x, int imageWidth, double minR, double maxR)
 {
 	double range = maxR - minR;
@@ -49,12 +44,11 @@ int findMandelbrot(double cr, double ci, int max_iterations)
 	return(i);
 }
 
-void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand)
+void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette)
 {
 
 	mlx_clear_window(mlx_ptr, win_ptr);
 	int rando = rand();
-
 
 	for(int y = 0; y < mand->imageHeight; y++)
 	{
@@ -63,11 +57,9 @@ void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand)
 			double cr = mapToReal(x, mand->imageWidth, mand->realMin, mand->realMax);
 			double ci = mapToImaginary(y, mand->imageHeight, mand->imaginaryMin, mand->imaginaryMax);
 			int n = findMandelbrot(cr, ci, mand->iterations);
-			int r = (n * rando % 256);
-			//int r =  256;
-			//int g = n % 256;
-			int g = (n * rando % 256);
-			int b = (n * rando % 256);
+			int r = ((n + palette->red) * rando % 256);
+			int g = ((n + palette->green) * rando % 256);
+			int b = ((n + palette->blue) * rando % 256);
 			int rgb;
 			rgb = (r << 16 | g << 8 | b);
 			if (n < mand->iterations - 1)
@@ -77,8 +69,6 @@ void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand)
 		}
 	}
 }
-
-
 
 int		ft_strcmp(char *s1, char *s2)
 {
@@ -90,14 +80,54 @@ int		ft_strcmp(char *s1, char *s2)
 	return(s1[i] - s2[i]);
 }
 
-int		key_press(int key)
+int		key_press(int key, void *pkg)
 {
-	printf("its working %d\n", key);
+	void *mlx_ptr;
+	void *win_ptr;
+	mandel *mainMandel;
+
+	mlx_ptr = ((package *)pkg)->mlx_ptr;
+	win_ptr = ((package *)pkg)->win_ptr;
+	mainMandel = ((package *)pkg)->mainMandel;
+
+	//printf("its working %d\n", key);
 	if (key == 53) //escape
 		exit(1);
 	//for zoomies later on
 	//if (key == 31) //o xkey
 	//if (key == 35) //p kxey
+
+
+	if (key == 12) //q
+	{
+		((package *)pkg)->palette->red += 5;
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 13) //w
+	{
+		((package *)pkg)->palette->green += 5;
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 14) //e
+	{
+		((package *)pkg)->palette->blue += 5;
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 0) //a
+	{
+		((package *)pkg)->palette->red -= 5;
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 1) //s
+	{
+		((package *)pkg)->palette->green -= 5;
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}	
+	if (key == 2) //d
+	{
+		((package *)pkg)->palette->blue -= 5;
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
 	return (1);
 }
 
@@ -105,6 +135,31 @@ int		mouse_move(int x, int y)
 {
 	//printf("x: %d y: %d\n", x, y);
 	return (1);
+}
+
+
+
+void	julia_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette)
+{
+	mlx_clear_window(mlx_ptr, win_ptr);
+	int rando = rand();
+
+	for(int y = 0; y < mand->imageHeight; y++)
+	{
+		for(int x = 0; x < mand->imageWidth; x++)
+		{
+			double cr = mapToReal(x, mand->imageWidth, mand->realMin, mand->realMax);
+			double ci = mapToImaginary(y, mand->imageHeight, mand->imaginaryMin, mand->imaginaryMax);
+			int n = findMandelbrot(cr, ci, mand->iterations);
+			int r = ((n + palette->red) * rando % 256);
+			int g = ((n + palette->green) * rando % 256);
+			int b = ((n + palette->blue) * rando % 256);
+			int rgb;
+			rgb = (r << 16 | g << 8 | b);
+			if (n < mand->iterations - 1)
+				mlx_pixel_put(mlx_ptr, win_ptr, x, y, rgb);
+		}
+	}
 }
 
 mandel *mainMandelInit()
@@ -127,18 +182,34 @@ void	fractal_driver(char *s)
 	void *mlx_ptr;
 	void *win_ptr;
 	mandel *mainMandel;
+	colors *palette;
+	package pkg;
+
+	palette = malloc(sizeof(colors));
+
+	palette->red = 0;
+	palette->green = 0;
+	palette->blue = 0;
 
 	mainMandel = mainMandelInit();
-
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, 900, 900, "fractol beta");
+	pkg.mlx_ptr = mlx_ptr;
+	pkg.win_ptr = win_ptr;
+	pkg.mainMandel = mainMandel;
+	pkg.palette = palette;
 
 	if(!ft_strcmp(s, "julia") || !ft_strcmp(s, "Julia"))
-		julia_driver();
+	{
+		mlx_key_hook(win_ptr, &key_press, &pkg);
+		mlx_hook(win_ptr, 6, 0, &mouse_move, s);
+		julia_driver(mlx_ptr, win_ptr, mainMandel, palette);
+		mlx_loop(mlx_ptr);
+	}
 	else if(!ft_strcmp(s, "mandelbrot") || !ft_strcmp(s, "Mandelbrot"))
 	{
-		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel);
-		mlx_key_hook(win_ptr, &key_press, NULL);
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, palette);
+		mlx_key_hook(win_ptr, &key_press, &pkg);
 		mlx_hook(win_ptr, 6, 0, &mouse_move, NULL);
 		mlx_loop(mlx_ptr);
 	}
