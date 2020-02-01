@@ -167,9 +167,9 @@ mandel *mainMandelInit()
 	mandel *ret;
 
 	ret = malloc(sizeof(mandel));
-	ret->imageWidth = 900;
-	ret->imageHeight = 900;
-	ret->iterations = 256;
+	ret->imageWidth = 750;
+	ret->imageHeight = 750;
+	ret->iterations = 100;
 	ret->realMin = -2;
 	ret->realMax = 2;
 	ret->imaginaryMin = -2;
@@ -193,7 +193,7 @@ void	fractal_driver(char *s)
 
 	mainMandel = mainMandelInit();
 	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 900, 900, "fractol beta");
+	win_ptr = mlx_new_window(mlx_ptr, 750, 750, "fractol beta");
 	pkg.mlx_ptr = mlx_ptr;
 	pkg.win_ptr = win_ptr;
 	pkg.mainMandel = mainMandel;
