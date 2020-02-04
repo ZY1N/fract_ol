@@ -27,17 +27,21 @@ double mapToImaginary(int x, int imageWidth, double minI, double maxI)
 	// [0, width]
 	// [0, max-minR] - val * range / width
 	// [inR, maxR]
-	return(x * (range / imageWidth) + minI); 
+	return(x * (range / imageWidth) + minI);
 }
 
 int findMandelbrot(double cr, double ci, int max_iterations)
 {
 	int i = 0;
-	double zr = 0.0, zi = 0.0;
+
+	//(a + bi) add cr to it when iterating
+	double zr = 0;
+	//(2 abi) add ci to it when iterating
+	double zi = 0;
 	while (i < max_iterations && zr * zr + zi * zi < 4)
 	{
 		double tmp = zr * zr - zi * zi + cr;
-		zi = 2.0 * zr * zi + ci;
+		zi = 2 * zi * zr + ci;
 		zr = tmp;
 		i++;
 	}
@@ -133,11 +137,63 @@ int		key_press(int key, void *pkg)
 
 int		mouse_move(int x, int y)
 {
-	//printf("x: %d y: %d\n", x, y);
+	printf("x: %d y: %d\n", x, y);
+
 	return (1);
 }
 
+/*
+int findJulia(double a, double b, int max_iterations)
+{
+	int i = 0;
 
+	float newa = -.7;
+	float newb = -.3;
+
+	while(i < max_iterations)
+	{
+		float aa = a * a - b * b;
+		float bb = 2 * a * b;
+		a = aa + newa;
+		b = bb + newb;
+		if( a + b > 4)
+			break ;
+		i++;
+	}
+	return(i);
+} */
+
+int findJulia(double a, double b, int max_iterations)
+{
+	int i = 0;
+
+	double zr = 0.0;
+	double zi = 0.0;
+	int flag = 0;
+
+	//a = .285;
+	//b = 0;
+	while(i < max_iterations)
+	{
+		if (flag == 0)
+		{
+			double tmp = zr * zr - zi * zi + a;
+			zi = 2 * zr * zi + b;
+			zr = tmp;
+		}
+		else
+		{
+			double tmp = zr * zr - zi * zi + .285;
+			zi = 2 * zr * zi + 0;
+			zr = tmp;	
+		}
+		flag = 1;
+		if (zr*zr + zi*zi > 4)
+			break ;
+		i++;
+	}
+	return(i);
+}
 
 void	julia_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette)
 {
@@ -150,8 +206,10 @@ void	julia_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette)
 		{
 			double cr = mapToReal(x, mand->imageWidth, mand->realMin, mand->realMax);
 			double ci = mapToImaginary(y, mand->imageHeight, mand->imaginaryMin, mand->imaginaryMax);
-			int n = findMandelbrot(cr, ci, mand->iterations);
-			int r = ((n + palette->red) * rando % 256);
+			int n = findJulia(cr, ci, mand->iterations);
+			int r = 0;
+			printf("%d\n", n);
+			//int r = ((n + palette->red) * rando % 256);
 			int g = ((n + palette->green) * rando % 256);
 			int b = ((n + palette->blue) * rando % 256);
 			int rgb;
@@ -170,10 +228,10 @@ mandel *mainMandelInit()
 	ret->imageWidth = 750;
 	ret->imageHeight = 750;
 	ret->iterations = 100;
-	ret->realMin = -2;
-	ret->realMax = 2;
-	ret->imaginaryMin = -2;
-	ret->imaginaryMax = 2;
+	ret->realMin = -2.5;
+	ret->realMax = 2.5;
+	ret->imaginaryMin = -2.5;
+	ret->imaginaryMax = 2.5;
 	return(ret);
 }
 
