@@ -17,6 +17,9 @@
 #include <stdlib.h>
 #include "minilibx_macos/mlx.h"
 
+#define MANDELBROT 1
+#define JULIA 0
+
 typedef struct mandel{
     int imageWidth;
     int imageHeight;
@@ -26,6 +29,10 @@ typedef struct mandel{
     double realMax;
     double imaginaryMin;
     double imaginaryMax;
+
+    int     xmouse;
+    int     ymouse;
+    int     type;
 } mandel;
 
 typedef struct colors{
@@ -39,6 +46,9 @@ typedef struct package{
     void *win_ptr;
     mandel *mainMandel;
     colors *palette;
+    int     xmouse;
+    int     ymouse;
+
 } package;
 
 #endif
