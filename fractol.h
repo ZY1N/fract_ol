@@ -16,7 +16,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "minilibx_macos/mlx.h"
+#include <math.h>
 
+#define BURNINGSHIP 2
 #define MANDELBROT 1
 #define JULIA 0
 

@@ -90,7 +90,7 @@ void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palet
 {
 
 	mlx_clear_window(mlx_ptr, win_ptr);
-	int rando = rand();
+	int rando = mand->randseed;//rand();
 
 	for(int y = 0 ;y < mand->imageHeight; y++)
 	{
@@ -357,6 +357,46 @@ int		key_press(int key, void *pkg)
 	return (1);
 } */
 
+int findBurningShip(double cr, double ci, int max_iterations)
+{
+	int i = 0;
+
+	double zr = 0;
+	double zi = 0;
+	while (i < max_iterations && zr * zr + zi * zi < 4)
+	{
+		double tmp = zr * zr - zi * zi + cr;
+		zi = fabs(2 * zi * zr + ci);
+		zr = tmp;
+		i++;
+	}
+	return(i);
+}
+
+void	burningship_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette)
+{
+
+	mlx_clear_window(mlx_ptr, win_ptr);
+	int rando = mand->randseed;//rand();
+
+	for(int y = 0 ;y < mand->imageHeight; y++)
+	{
+		for(int x = 0 ;x < mand->imageWidth; x++)
+		{
+			double cr = mapToReal(x, mand->imageWidth, mand->realMin, mand->realMax);
+			double ci = mapToImaginary(y, mand->imageHeight, mand->imaginaryMin, mand->imaginaryMax);
+			int n = findBurningShip(cr, ci, mand->iterations);
+			int r = ((n + palette->red) * rando % 256);
+			int g = ((n + palette->green) * rando % 256);
+			int b = ((n + palette->blue) * rando % 256);
+			int rgb;
+			rgb = (r << 16 | g << 8 | b);
+			if (n < mand->iterations - 1)
+				mlx_pixel_put(mlx_ptr, win_ptr, x, y, rgb);
+		}
+	}
+}
+
 void		key_driver(int key, void *pkg, void (* f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette))
 {
 	void *mlx_ptr;
@@ -456,6 +496,10 @@ int		key_press(int key, void *pkg)
 	{
 		key_driver(key, pkg, mandelbrot_driver);
 	}
+	else if(mainMandel->type == BURNINGSHIP)
+	{
+		key_driver(key, pkg, burningship_driver);	
+	}
 	return (1);
 }
 
@@ -493,7 +537,7 @@ mandel *mainMandelInit()
 	ret->horizontal = 0;
 	ret->vertical = 0;
 	ret->zoomscale = 1;
-	ret->randseed = 666;
+	ret->randseed = 50;
 	return(ret);
 }
 
@@ -524,7 +568,6 @@ void	fractal_driver(char *s)
 		mainMandel->type = JULIA;
 		mlx_key_hook(win_ptr, &key_press, &pkg);
 		mlx_hook(win_ptr, 6, 0, &mouse_move, &pkg);
-		
 		julia_driver(mlx_ptr, win_ptr, mainMandel, palette);
 		mlx_loop(mlx_ptr);
 	}
@@ -532,6 +575,13 @@ void	fractal_driver(char *s)
 	{
 		mainMandel->type = MANDELBROT; 
 		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, palette);
+		mlx_key_hook(win_ptr, &key_press, &pkg);
+		mlx_loop(mlx_ptr);
+	}
+	else if(!ft_strcmp(s, "burning ship") || !ft_strcmp(s, "Buring Ship"))
+	{
+		mainMandel->type = BURNINGSHIP;
+		burningship_driver(mlx_ptr, win_ptr, mainMandel, palette);
 		mlx_key_hook(win_ptr, &key_press, &pkg);
 		mlx_loop(mlx_ptr);
 	}
