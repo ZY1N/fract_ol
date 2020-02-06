@@ -21,9 +21,22 @@
 #define BURNINGSHIP 2
 #define MANDELBROT 1
 #define JULIA 0
+#define ESC 53
+#define LEFT 123
+#define UP 126
+#define RIGHT 124
+#define DOWN 125
+#define ZOOM_IN 31
+#define ZOOM_OUT 35
+#define Q 12
+#define W 13
+#define E 14
+#define A 0
+#define S 1
+#define D 2
 
 typedef struct mandel{
-    int imageWidth;
+    int imagewidth;
     int imageHeight;
     int iterations;
 
@@ -52,11 +65,21 @@ typedef struct colors{
 typedef struct package{
     void *mlx_ptr;
     void *win_ptr;
-    mandel *mainMandel;
+    mandel *mainmandel;
     colors *palette;
     int     xmouse;
     int     ymouse;
 
 } package;
+
+double	map_to_real(int x, int imagewidth, double minr, double maxr);
+double	map_to_imaginary(int x, int imagewidth, double mini, double maxi);
+int		ft_strcmp(char *s1, char *s2);
+mandel *main_mandel_init();
+void		key_driver(int key, void *pkg, void (* f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette));
+int key_press(int key, void *pkg);
+void	julia_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette);
+void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette);
+void	burningship_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette);
 
 #endif
