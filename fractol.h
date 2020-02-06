@@ -33,6 +33,12 @@ typedef struct mandel{
     int     xmouse;
     int     ymouse;
     int     type;
+
+    int horizontal;
+    int vertical;
+    int randseed;
+
+    double zoomscale;
 } mandel;
 
 typedef struct colors{

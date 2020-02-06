@@ -50,7 +50,7 @@ void	julia_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette)
 {
 	mlx_clear_window(mlx_ptr, win_ptr);
 	
-	int rando = rand();
+	int rando = mand->randseed;//rand();
 	for(int y = 0; y < mand->imageHeight; y++)
 	{
 		for(int x = 0; x < mand->imageWidth; x++)
@@ -92,9 +92,9 @@ void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palet
 	mlx_clear_window(mlx_ptr, win_ptr);
 	int rando = rand();
 
-	for(int y = 0; y < mand->imageHeight; y++)
+	for(int y = 0 ;y < mand->imageHeight; y++)
 	{
-		for(int x = 0; x < mand->imageWidth; x++)
+		for(int x = 0 ;x < mand->imageWidth; x++)
 		{
 			double cr = mapToReal(x, mand->imageWidth, mand->realMin, mand->realMax);
 			double ci = mapToImaginary(y, mand->imageHeight, mand->imaginaryMin, mand->imaginaryMax);
@@ -120,6 +120,7 @@ int		ft_strcmp(char *s1, char *s2)
 	return(s1[i] - s2[i]);
 }
 
+/*
 void julia_keys(int key, package *pkg)
 {
 	void *mlx_ptr;
@@ -130,10 +131,63 @@ void julia_keys(int key, package *pkg)
 	win_ptr = ((package *)pkg)->win_ptr;
 	mainMandel = ((package *)pkg)->mainMandel;
 
-	printf("its working %d\n", key);
+
+	//123 126 124 125 left up right down
+
 	if (key == 53) //escape
 		exit(1);
 	//for zoomies later on
+		if(key == 123) //left
+	{
+		mainMandel->realMin += (mainMandel->zoomscale * .25);
+		mainMandel->realMax += (mainMandel->zoomscale * .25);
+		julia_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if(key == 126) //up
+	{
+		//mainMandel->imaginaryMin *= .9;
+		//mainMandel->imaginaryMax /= .9;
+		mainMandel->imaginaryMin += mainMandel->zoomscale * .25;
+		mainMandel->imaginaryMax += mainMandel->zoomscale *.25;
+		//mainMandel->vertical -= 50;
+		julia_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if(key == 124) //right
+	{
+		mainMandel->realMin -= mainMandel->zoomscale * .25;
+		mainMandel->realMax -= mainMandel->zoomscale * .25;
+		//mainMandel->realMin /= .9;
+		//mainMandel->realMax *= .9;
+		//mainMandel->horizontal += 50;
+		julia_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if(key == 125) //down
+	{
+		mainMandel->imaginaryMin -= mainMandel->zoomscale *.25;
+		mainMandel->imaginaryMax -= mainMandel->zoomscale *.25;
+		//mainMandel->imaginaryMin /= -.9;
+		//mainMandel->imaginaryMax *= -.9;
+		//mainMandel->vertical += 50;		
+		julia_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 31) //o xkey zoom in
+	{
+		mainMandel->realMin *= .9;
+		mainMandel->realMax *= .9;
+		mainMandel->imaginaryMin *= .9;
+		mainMandel->imaginaryMax *= .9;
+		mainMandel->zoomscale *= .9;
+		julia_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 35) //p kxey zoom out
+	{
+		mainMandel->realMin /= .9;
+		mainMandel->realMax /= .9;
+		mainMandel->imaginaryMin /= .9;
+		mainMandel->imaginaryMax /= .9;
+		mainMandel->zoomscale /= .9;
+		julia_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
 	if (key == 31) //o xkey
 	{
 		mainMandel->realMin += .1;
@@ -193,25 +247,64 @@ void mandelbrot_keys(int key, package *pkg)
 	mlx_ptr = ((package *)pkg)->mlx_ptr;
 	win_ptr = ((package *)pkg)->win_ptr;
 	mainMandel = ((package *)pkg)->mainMandel;
+	int scale = (mainMandel->realMax - mainMandel->realMin);
 
 	//printf("its working %d\n", key);
+	//123 126 124 125 left up right down
 	if (key == 53) //escape
 		exit(1);
-	//for zoomies later on
-	if (key == 31) //o xkey
+	if(key == 123) //left
 	{
-		mainMandel->realMin += .1;
-		mainMandel->realMax -= .1;
-		mainMandel->imaginaryMin += .1;
-		mainMandel->imaginaryMax-= .1;
+		//mainMandel->realMin *= .9;
+		//mainMandel->realMax /= .9;
+		mainMandel->realMin += (mainMandel->zoomscale * .25);
+		mainMandel->realMax += (mainMandel->zoomscale * .25);
+		//mainMandel->horizontal -= 50;
 		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
 	}
-	if (key == 35) //p kxey
+	if(key == 126) //up
 	{
-		mainMandel->realMin+= .1;
-		mainMandel->realMax-= .1;
-		mainMandel->imaginaryMin+= .1;
-		mainMandel->imaginaryMax-= .1;
+		//mainMandel->imaginaryMin *= .9;
+		//mainMandel->imaginaryMax /= .9;
+		mainMandel->imaginaryMin += mainMandel->zoomscale * .25;
+		mainMandel->imaginaryMax += mainMandel->zoomscale *.25;
+		//mainMandel->vertical -= 50;
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if(key == 124) //right
+	{
+		mainMandel->realMin -= mainMandel->zoomscale * .25;
+		mainMandel->realMax -= mainMandel->zoomscale * .25;
+		//mainMandel->realMin /= .9;
+		//mainMandel->realMax *= .9;
+		//mainMandel->horizontal += 50;
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if(key == 125) //down
+	{
+		mainMandel->imaginaryMin -= mainMandel->zoomscale *.25;
+		mainMandel->imaginaryMax -= mainMandel->zoomscale *.25;
+		//mainMandel->imaginaryMin /= -.9;
+		//mainMandel->imaginaryMax *= -.9;
+		//mainMandel->vertical += 50;		
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 31) //o xkey zoom in
+	{
+		mainMandel->realMin *= .9;
+		mainMandel->realMax *= .9;
+		mainMandel->imaginaryMin *= .9;
+		mainMandel->imaginaryMax *= .9;
+		mainMandel->zoomscale *= .9;
+		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 35) //p kxey zoom out
+	{
+		mainMandel->realMin /= .9;
+		mainMandel->realMax /= .9;
+		mainMandel->imaginaryMin /= .9;
+		mainMandel->imaginaryMax /= .9;
+		mainMandel->zoomscale /= .9;
 		mandelbrot_driver(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
 	}
 	if (key == 12) //q
@@ -262,7 +355,112 @@ int		key_press(int key, void *pkg)
 		mandelbrot_keys(key, (package *)pkg);
 	}
 	return (1);
+} */
+
+void		key_driver(int key, void *pkg, void (* f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette))
+{
+	void *mlx_ptr;
+	void *win_ptr;
+	mandel *mainMandel;
+
+	mlx_ptr = ((package *)pkg)->mlx_ptr;
+	win_ptr = ((package *)pkg)->win_ptr;
+	mainMandel = ((package *)pkg)->mainMandel;
+	int scale = (mainMandel->realMax - mainMandel->realMin);
+
+	if (key == 53) //esc
+		exit(1);
+	if(key == 123) //left
+	{
+		mainMandel->realMin += (mainMandel->zoomscale * .25);
+		mainMandel->realMax += (mainMandel->zoomscale * .25);
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if(key == 126) //up
+	{
+		mainMandel->imaginaryMin += mainMandel->zoomscale * .25;
+		mainMandel->imaginaryMax += mainMandel->zoomscale *.25;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if(key == 124) //right
+	{
+		mainMandel->realMin -= mainMandel->zoomscale * .25;
+		mainMandel->realMax -= mainMandel->zoomscale * .25;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if(key == 125) //down
+	{
+		mainMandel->imaginaryMin -= mainMandel->zoomscale *.25;
+		mainMandel->imaginaryMax -= mainMandel->zoomscale *.25;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 31) //o xkey zoom in
+	{
+		mainMandel->realMin *= .9;
+		mainMandel->realMax *= .9;
+		mainMandel->imaginaryMin *= .9;
+		mainMandel->imaginaryMax *= .9;
+		mainMandel->zoomscale *= .9;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 35) //p kxey zoom out
+	{
+		mainMandel->realMin /= .9;
+		mainMandel->realMax /= .9;
+		mainMandel->imaginaryMin /= .9;
+		mainMandel->imaginaryMax /= .9;
+		mainMandel->zoomscale /= .9;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 12) //q
+	{
+		((package *)pkg)->palette->red += 5;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 13) //w
+	{
+		((package *)pkg)->palette->green += 5;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 14) //e
+	{
+		((package *)pkg)->palette->blue += 5;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 0) //a
+	{
+		((package *)pkg)->palette->red -= 5;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
+	if (key == 1) //s
+	{
+		((package *)pkg)->palette->green -= 5;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}	
+	if (key == 2) //d
+	{
+		((package *)pkg)->palette->blue -= 5;
+		(*f)(mlx_ptr, win_ptr, mainMandel, ((package *)pkg)->palette);
+	}
 }
+
+int		key_press(int key, void *pkg)
+{
+	mandel *mainMandel;
+	mainMandel = ((package *)pkg)->mainMandel;
+	if (mainMandel->type == JULIA)
+	{
+		key_driver(key, pkg, julia_driver);
+	}
+	else if(mainMandel->type == MANDELBROT)
+	{
+		key_driver(key, pkg, mandelbrot_driver);
+	}
+	return (1);
+}
+
+
+
 
 int		mouse_move(int x, int y, package *pkg)
 {
@@ -292,6 +490,10 @@ mandel *mainMandelInit()
 	ret->imaginaryMax = 2.5;
 	ret->xmouse = 2;
 	ret->ymouse = 2;
+	ret->horizontal = 0;
+	ret->vertical = 0;
+	ret->zoomscale = 1;
+	ret->randseed = 666;
 	return(ret);
 }
 
