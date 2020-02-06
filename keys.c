@@ -12,43 +12,16 @@
 
 #include "fractol.h"
 
-void	key_driver(int key, void *pkg, void (*f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette))
+void	key_driver3(int key, void *pkg,
+	void (*f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette))
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
 	mandel	*mainmandel;
-	int		scale;
 
 	mlx_ptr = ((package *)pkg)->mlx_ptr;
 	win_ptr = ((package *)pkg)->win_ptr;
 	mainmandel = ((package *)pkg)->mainmandel;
-	scale = (mainmandel->realMax - mainmandel->realMin);
-	if (key == ESC)
-		exit(1);
-	if (key == LEFT)
-	{
-		mainmandel->realMin += (mainmandel->zoomscale * .25);
-		mainmandel->realMax += (mainmandel->zoomscale * .25);
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
-	}
-	if (key == UP)
-	{
-		mainmandel->imaginaryMin += mainmandel->zoomscale * .25;
-		mainmandel->imaginaryMax += mainmandel->zoomscale * .25;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
-	}
-	if (key == RIGHT)
-	{
-		mainmandel->realMin -= mainmandel->zoomscale * .25;
-		mainmandel->realMax -= mainmandel->zoomscale * .25;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
-	}
-	if (key == DOWN)
-	{
-		mainmandel->imaginaryMin -= mainmandel->zoomscale * .25;
-		mainmandel->imaginaryMax -= mainmandel->zoomscale * .25;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
-	}
 	if (key == ZOOM_IN)
 	{
 		mainmandel->realMin *= .9;
@@ -67,36 +40,60 @@ void	key_driver(int key, void *pkg, void (*f)(void *mlx_ptr, void *win_ptr, mand
 		mainmandel->zoomscale /= .9;
 		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
 	}
-	if (key == Q)
+}
+
+void	key_driver2(int key, void *pkg,
+	void (*f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette))
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	mandel	*mainmandel;
+
+	mlx_ptr = ((package *)pkg)->mlx_ptr;
+	win_ptr = ((package *)pkg)->win_ptr;
+	mainmandel = ((package *)pkg)->mainmandel;
+	if (key == RIGHT)
 	{
-		((package *)pkg)->palette->red += 5;
+		mainmandel->realMin -= mainmandel->zoomscale * .25;
+		mainmandel->realMax -= mainmandel->zoomscale * .25;
 		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
 	}
-	if (key == W)
+	if (key == DOWN)
 	{
-		((package *)pkg)->palette->green += 5;
+		mainmandel->imaginaryMin -= mainmandel->zoomscale * .25;
+		mainmandel->imaginaryMax -= mainmandel->zoomscale * .25;
 		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
 	}
-	if (key == E)
+}
+
+void	key_driver(int key, void *pkg,
+	void (*f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette))
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	mandel	*mainmandel;
+
+	mlx_ptr = ((package *)pkg)->mlx_ptr;
+	win_ptr = ((package *)pkg)->win_ptr;
+	mainmandel = ((package *)pkg)->mainmandel;
+	if (key == ESC)
+		exit(1);
+	if (key == LEFT)
 	{
-		((package *)pkg)->palette->blue += 5;
+		mainmandel->realMin += (mainmandel->zoomscale * .25);
+		mainmandel->realMax += (mainmandel->zoomscale * .25);
 		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
 	}
-	if (key == A)
+	if (key == UP)
 	{
-		((package *)pkg)->palette->red -= 5;
+		mainmandel->imaginaryMin += mainmandel->zoomscale * .25;
+		mainmandel->imaginaryMax += mainmandel->zoomscale * .25;
 		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
 	}
-	if (key == S)
-	{
-		((package *)pkg)->palette->green -= 5;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
-	}
-	if (key == D)
-	{
-		((package *)pkg)->palette->blue -= 5;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
-	}
+	key_driver2(key, pkg, f);
+	key_driver3(key, pkg, f);
+	key_driver4(key, pkg, f);
+	key_driver5(key, pkg, f);
 }
 
 int		key_press(int key, void *pkg)
