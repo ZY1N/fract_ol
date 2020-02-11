@@ -29,8 +29,8 @@ $(NAME):
 	@gcc $(CFLAGS) -L $(MINILIBX) -I $(MINILIBX) -lmlx -framework OpenGL -framework Appkit $(FILES) -o $(NAME)
 
 clean:
-	@rm -f (OBJ)
-	@make clean -c $(MINILIBX)
+	@rm -f $(OBJ)
+	@make clean -C $(MINILIBX)
 
 fclean:
 	@rm -f $(OBJ)
