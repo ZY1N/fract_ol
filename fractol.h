@@ -80,14 +80,21 @@ void		key_driver(int key, void *pkg, void (* f)(void *mlx_ptr, void *win_ptr, ma
 int key_press(int key, void *pkg);
 void	julia_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette);
 void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette);
-void	burningship_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette);
+void	bship_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette);
 void	key_driver5(int key, void *pkg,
 	void (*f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette));
 void	key_driver4(int key, void *pkg,
 	void (*f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette));
    int		findjulia(double a, double b, int max_iterations, mandel *mand);
 int findBurningShip(double cr, double ci, int max_iterations);
-void	burningship_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *mainmandel);
-int findMandelbrot(double cr, double ci, int max_iterations);
-void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *mainmandel);
+void	burningship_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *p);
+int findmandelbrot(double cr, double ci, int max_iterations);
+void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *p);
+//colors *	fill_colors();
+//void 	fill_colors(colors **palette);
+void	fill_colors(colors *p, colors **p2);
+//void	fill_pkg(mandel *mainmandel, colors *palette, package *pkg);
+package	fill_pkg(mandel *mainmandel, colors *p, void *mlx_ptr, void *win_ptr);
+void	free_things(mandel *mainmandel, colors *p, void *mlx_ptr, void *win_ptr);
+
 #endif

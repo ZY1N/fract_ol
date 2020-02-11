@@ -62,6 +62,7 @@ void	julia_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *p)
 
 	x = 0;
 	y = 0;
+	n = 0;
 	mlx_clear_window(mlx_ptr, win_ptr);
 	while (y < mand->imageHeight)
 	{

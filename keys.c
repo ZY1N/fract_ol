@@ -111,7 +111,7 @@ int		key_press(int key, void *pkg)
 	}
 	else if (mainmandel->type == BURNINGSHIP)
 	{
-		key_driver(key, pkg, burningship_driver);
+		key_driver(key, pkg, bship_driver);
 	}
 	return (1);
 }
