@@ -13,82 +13,82 @@
 #include "fractol.h"
 
 void	key_driver3(int key, void *pkg,
-	void (*f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette))
+	void (*f)(void *mlx_ptr, void *win_ptr, t_mandel *mand, t_colors *palette))
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
-	mandel	*mainmandel;
+	t_mandel	*mainmandel;
 
-	mlx_ptr = ((package *)pkg)->mlx_ptr;
-	win_ptr = ((package *)pkg)->win_ptr;
-	mainmandel = ((package *)pkg)->mainmandel;
+	mlx_ptr = ((t_package *)pkg)->mlx_ptr;
+	win_ptr = ((t_package *)pkg)->win_ptr;
+	mainmandel = ((t_package *)pkg)->mainmandel;
 	if (key == ZOOM_IN)
 	{
-		mainmandel->realMin *= .9;
-		mainmandel->realMax *= .9;
-		mainmandel->imaginaryMin *= .9;
-		mainmandel->imaginaryMax *= .9;
+		mainmandel->realmin *= .9;
+		mainmandel->realmax *= .9;
+		mainmandel->imaginarymin *= .9;
+		mainmandel->imaginarymax *= .9;
 		mainmandel->zoomscale *= .9;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
+		(*f)(mlx_ptr, win_ptr, mainmandel, ((t_package *)pkg)->palette);
 	}
 	if (key == ZOOM_OUT)
 	{
-		mainmandel->realMin /= .9;
-		mainmandel->realMax /= .9;
-		mainmandel->imaginaryMin /= .9;
-		mainmandel->imaginaryMax /= .9;
+		mainmandel->realmin /= .9;
+		mainmandel->realmax /= .9;
+		mainmandel->imaginarymin /= .9;
+		mainmandel->imaginarymax /= .9;
 		mainmandel->zoomscale /= .9;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
+		(*f)(mlx_ptr, win_ptr, mainmandel, ((t_package *)pkg)->palette);
 	}
 }
 
 void	key_driver2(int key, void *pkg,
-	void (*f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette))
+	void (*f)(void *mlx_ptr, void *win_ptr, t_mandel *mand, t_colors *palette))
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
-	mandel	*mainmandel;
+	t_mandel	*mainmandel;
 
-	mlx_ptr = ((package *)pkg)->mlx_ptr;
-	win_ptr = ((package *)pkg)->win_ptr;
-	mainmandel = ((package *)pkg)->mainmandel;
+	mlx_ptr = ((t_package *)pkg)->mlx_ptr;
+	win_ptr = ((t_package *)pkg)->win_ptr;
+	mainmandel = ((t_package *)pkg)->mainmandel;
 	if (key == RIGHT)
 	{
-		mainmandel->realMin -= mainmandel->zoomscale * .25;
-		mainmandel->realMax -= mainmandel->zoomscale * .25;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
+		mainmandel->realmin -= mainmandel->zoomscale * .25;
+		mainmandel->realmax -= mainmandel->zoomscale * .25;
+		(*f)(mlx_ptr, win_ptr, mainmandel, ((t_package *)pkg)->palette);
 	}
 	if (key == DOWN)
 	{
-		mainmandel->imaginaryMin -= mainmandel->zoomscale * .25;
-		mainmandel->imaginaryMax -= mainmandel->zoomscale * .25;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
+		mainmandel->imaginarymin -= mainmandel->zoomscale * .25;
+		mainmandel->imaginarymax -= mainmandel->zoomscale * .25;
+		(*f)(mlx_ptr, win_ptr, mainmandel, ((t_package *)pkg)->palette);
 	}
 }
 
 void	key_driver(int key, void *pkg,
-	void (*f)(void *mlx_ptr, void *win_ptr, mandel *mand, colors *palette))
+	void (*f)(void *mlx_ptr, void *win_ptr, t_mandel *mand, t_colors *palette))
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
-	mandel	*mainmandel;
+	t_mandel	*mainmandel;
 
-	mlx_ptr = ((package *)pkg)->mlx_ptr;
-	win_ptr = ((package *)pkg)->win_ptr;
-	mainmandel = ((package *)pkg)->mainmandel;
+	mlx_ptr = ((t_package *)pkg)->mlx_ptr;
+	win_ptr = ((t_package *)pkg)->win_ptr;
+	mainmandel = ((t_package *)pkg)->mainmandel;
 	if (key == ESC)
 		exit(1);
 	if (key == LEFT)
 	{
-		mainmandel->realMin += (mainmandel->zoomscale * .25);
-		mainmandel->realMax += (mainmandel->zoomscale * .25);
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
+		mainmandel->realmin += (mainmandel->zoomscale * .25);
+		mainmandel->realmax += (mainmandel->zoomscale * .25);
+		(*f)(mlx_ptr, win_ptr, mainmandel, ((t_package *)pkg)->palette);
 	}
 	if (key == UP)
 	{
-		mainmandel->imaginaryMin += mainmandel->zoomscale * .25;
-		mainmandel->imaginaryMax += mainmandel->zoomscale * .25;
-		(*f)(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
+		mainmandel->imaginarymin += mainmandel->zoomscale * .25;
+		mainmandel->imaginarymax += mainmandel->zoomscale * .25;
+		(*f)(mlx_ptr, win_ptr, mainmandel, ((t_package *)pkg)->palette);
 	}
 	key_driver2(key, pkg, f);
 	key_driver3(key, pkg, f);
@@ -98,9 +98,9 @@ void	key_driver(int key, void *pkg,
 
 int		key_press(int key, void *pkg)
 {
-	mandel	*mainmandel;
+	t_mandel	*mainmandel;
 
-	mainmandel = ((package *)pkg)->mainmandel;
+	mainmandel = ((t_package *)pkg)->mainmandel;
 	if (mainmandel->type == JULIA)
 	{
 		key_driver(key, pkg, julia_driver);

@@ -12,18 +12,18 @@
 
 #include "fractol.h"
 
-int		mouse_move(int x, int y, package *pkg)
+int		mouse_move(int x, int y, t_package *pkg)
 {
-	mandel	*mainmandel;
+	t_mandel	*mainmandel;
 	void	*mlx_ptr;
 	void	*win_ptr;
 
 	mainmandel = pkg->mainmandel;
-	mlx_ptr = ((package *)pkg)->mlx_ptr;
-	win_ptr = ((package *)pkg)->win_ptr;
+	mlx_ptr = ((t_package *)pkg)->mlx_ptr;
+	win_ptr = ((t_package *)pkg)->win_ptr;
 	mainmandel->xmouse = x;
 	mainmandel->ymouse = y;
-	julia_driver(mlx_ptr, win_ptr, mainmandel, ((package *)pkg)->palette);
+	julia_driver(mlx_ptr, win_ptr, mainmandel, ((t_package *)pkg)->palette);
 	return (1);
 }
 
@@ -31,9 +31,9 @@ void	fractal_driver(char *s)
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
-	mandel	*mainmandel;
-	colors	*palette;
-	package pkg;
+	t_mandel	*mainmandel;
+	t_colors	*palette;
+	t_package pkg;
 
 	fill_colors(&palette);
 	mainmandel = main_mandel_init();
@@ -43,22 +43,15 @@ void	fractal_driver(char *s)
 	{
 		mainmandel->type = JULIA;
 		mlx_hook(win_ptr, 6, 0, &mouse_move, &pkg);
-		julia_driver(mlx_ptr, win_ptr, mainmandel, palette);
 	}
 	else if (!ft_strcmp(s, "mandelbrot") || !ft_strcmp(s, "Mandelbrot"))
-	{
 		mainmandel->type = MANDELBROT;
-		mandelbrot_driver(mlx_ptr, win_ptr, mainmandel, palette);
-	}
 	else if (!ft_strcmp(s, "burning ship") || !ft_strcmp(s, "Burning Ship"))
-	{
 		mainmandel->type = BURNINGSHIP;
-		bship_driver(mlx_ptr, win_ptr, mainmandel, palette);
-	}
+	go_to_driver(mainmandel, mlx_ptr, win_ptr, palette);
 	mlx_key_hook(win_ptr, &key_press, &pkg);
 	mlx_loop(mlx_ptr);
 	free_things(mainmandel, palette, mlx_ptr, win_ptr);
-	printf("Not Valid\n");
 }
 
 int		main(int argc, char **argv)

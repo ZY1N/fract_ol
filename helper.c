@@ -38,18 +38,18 @@ int		ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-mandel	*main_mandel_init(void)
+t_mandel	*main_mandel_init(void)
 {
-	mandel *ret;
+	t_mandel *ret;
 
-	ret = malloc(sizeof(mandel));
+	ret = malloc(sizeof(t_mandel));
 	ret->imagewidth = 750;
-	ret->imageHeight = 750;
+	ret->imageheight = 750;
 	ret->iterations = 100;
-	ret->realMin = -2.5;
-	ret->realMax = 2.5;
-	ret->imaginaryMin = -2.5;
-	ret->imaginaryMax = 2.5;
+	ret->realmin = -2.5;
+	ret->realmax = 2.5;
+	ret->imaginarymin = -2.5;
+	ret->imaginarymax = 2.5;
 	ret->xmouse = 2;
 	ret->ymouse = 2;
 	ret->horizontal = 0;

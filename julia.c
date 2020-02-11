@@ -12,7 +12,7 @@
 
 #include "fractol.h"
 
-int		findjulia(double a, double b, int max_iterations, mandel *mand)
+int		findjulia(double a, double b, int max_iterations, t_mandel *mand)
 {
 	int		i;
 	double	zr;
@@ -28,9 +28,9 @@ int		findjulia(double a, double b, int max_iterations, mandel *mand)
 	while (i < max_iterations)
 	{
 		tmp = zr * zr - zi * zi + map_to_real(mand->xmouse, mand->imagewidth,
-			mand->realMin, mand->realMax);
-		zi = 2 * zr * zi + map_to_imaginary(mand->ymouse, mand->imageHeight,
-			mand->imaginaryMin, mand->imaginaryMax);
+			mand->realmin, mand->realmax);
+		zi = 2 * zr * zi + map_to_imaginary(mand->ymouse, mand->imageheight,
+			mand->imaginarymin, mand->imaginarymax);
 		zr = tmp;
 		if (zr * zr + zi * zi > 4)
 			break ;
@@ -39,21 +39,21 @@ int		findjulia(double a, double b, int max_iterations, mandel *mand)
 	return (i);
 }
 
-int		is_in_julia(mandel *mand, int x, int y)
+int		is_in_julia(t_mandel *mand, int x, int y)
 {
 	int		n;
 	double	cr;
 	double	ci;
 
 	n = 0;
-	cr = map_to_real(x, mand->imagewidth, mand->realMin, mand->realMax);
-	ci = map_to_imaginary(y, mand->imageHeight, mand->imaginaryMin
-		, mand->imaginaryMax);
+	cr = map_to_real(x, mand->imagewidth, mand->realmin, mand->realmax);
+	ci = map_to_imaginary(y, mand->imageheight, mand->imaginarymin
+		, mand->imaginarymax);
 	n = findjulia(cr, ci, mand->iterations, mand);
 	return (n);
 }
 
-void	julia_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *p)
+void	julia_driver(void *mlx_ptr, void *win_ptr, t_mandel *mand, t_colors *p)
 {
 	int n;
 	int rgb;
@@ -64,7 +64,7 @@ void	julia_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *p)
 	y = 0;
 	n = 0;
 	mlx_clear_window(mlx_ptr, win_ptr);
-	while (y < mand->imageHeight)
+	while (y < mand->imageheight)
 	{
 		x = 0;
 		while (x < mand->imagewidth)

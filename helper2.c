@@ -12,17 +12,17 @@
 
 #include "fractol.h"
 
-void	fill_colors(colors **palette)
+void	fill_colors(t_colors **palette)
 {
-	*palette = malloc(sizeof(colors));
+	*palette = malloc(sizeof(t_mandel));
 	(*palette)->red = 0;
 	(*palette)->green = 0;
 	(*palette)->blue = 0;
 }
 
-package	fill_pkg(mandel *mainmandel, colors *p, void *mlx_ptr, void *win_ptr)
+t_package	fill_pkg(t_mandel *mainmandel, t_colors *p, void *mlx_ptr, void *win_ptr)
 {
-	package pkg;
+	t_package pkg;
 
 	pkg.mlx_ptr = mlx_ptr;
 	pkg.win_ptr = win_ptr;
@@ -31,7 +31,7 @@ package	fill_pkg(mandel *mainmandel, colors *p, void *mlx_ptr, void *win_ptr)
 	return (pkg);
 }
 
-void	free_things(mandel *mainmandel, colors *p, void *mlx_ptr, void *win_ptr)
+void	free_things(t_mandel *mainmandel, t_colors *p, void *mlx_ptr, void *win_ptr)
 {
 	free(mainmandel);
 	free(p);
@@ -43,4 +43,19 @@ void	init_mlx_win(void **mlx_ptr, void **win_ptr)
 {
 	*mlx_ptr = mlx_init();
 	*win_ptr = mlx_new_window(*mlx_ptr, 750, 750, "fractol beta");
+}
+
+void	go_to_driver(t_mandel *mmandel, void *mlx_ptr, void *win_ptr, t_colors *p)
+{
+	if (mmandel->type == JULIA)
+		julia_driver(mlx_ptr, win_ptr, mmandel, p);
+	else if (mmandel->type == MANDELBROT)
+		mandelbrot_driver(mlx_ptr, win_ptr, mmandel, p);
+	else if (mmandel->type == BURNINGSHIP)
+		bship_driver(mlx_ptr, win_ptr, mmandel, p);
+	else
+	{
+		write(1, "Not Valid\n", 10);
+		exit(1);
+	}
 }
