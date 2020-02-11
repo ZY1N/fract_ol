@@ -35,34 +35,28 @@ void	fractal_driver(char *s)
 	colors	*palette;
 	package pkg;
 
-	printf("palette pointer %lu\n", palette);
-	fill_colors(palette, &palette);
+	fill_colors(&palette);
 	mainmandel = main_mandel_init();
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 750, 750, "fractol beta");
+	init_mlx_win(&mlx_ptr, &win_ptr);
 	pkg = fill_pkg(mainmandel, palette, mlx_ptr, win_ptr);
 	if (!ft_strcmp(s, "julia") || !ft_strcmp(s, "Julia"))
 	{
 		mainmandel->type = JULIA;
-		mlx_key_hook(win_ptr, &key_press, &pkg);
 		mlx_hook(win_ptr, 6, 0, &mouse_move, &pkg);
 		julia_driver(mlx_ptr, win_ptr, mainmandel, palette);
-		mlx_loop(mlx_ptr);
 	}
 	else if (!ft_strcmp(s, "mandelbrot") || !ft_strcmp(s, "Mandelbrot"))
 	{
 		mainmandel->type = MANDELBROT;
 		mandelbrot_driver(mlx_ptr, win_ptr, mainmandel, palette);
-		mlx_key_hook(win_ptr, &key_press, &pkg);
-		mlx_loop(mlx_ptr);
 	}
 	else if (!ft_strcmp(s, "burning ship") || !ft_strcmp(s, "Burning Ship"))
 	{
 		mainmandel->type = BURNINGSHIP;
 		bship_driver(mlx_ptr, win_ptr, mainmandel, palette);
-		mlx_key_hook(win_ptr, &key_press, &pkg);
-		mlx_loop(mlx_ptr);
 	}
+	mlx_key_hook(win_ptr, &key_press, &pkg);
+	mlx_loop(mlx_ptr);
 	free_things(mainmandel, palette, mlx_ptr, win_ptr);
 	printf("Not Valid\n");
 }

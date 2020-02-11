@@ -92,9 +92,10 @@ int findmandelbrot(double cr, double ci, int max_iterations);
 void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, mandel *mand, colors *p);
 //colors *	fill_colors();
 //void 	fill_colors(colors **palette);
-void	fill_colors(colors *p, colors **p2);
+void	fill_colors(colors **palette);
 //void	fill_pkg(mandel *mainmandel, colors *palette, package *pkg);
 package	fill_pkg(mandel *mainmandel, colors *p, void *mlx_ptr, void *win_ptr);
 void	free_things(mandel *mainmandel, colors *p, void *mlx_ptr, void *win_ptr);
+void	init_mlx_win(void **mlx_ptr, void **win_ptr);
 
 #endif
