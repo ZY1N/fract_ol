@@ -15,8 +15,8 @@
 int		mouse_move(int x, int y, t_package *pkg)
 {
 	t_mandel	*mainmandel;
-	void	*mlx_ptr;
-	void	*win_ptr;
+	void		*mlx_ptr;
+	void		*win_ptr;
 
 	mainmandel = pkg->mainmandel;
 	mlx_ptr = ((t_package *)pkg)->mlx_ptr;
@@ -29,11 +29,11 @@ int		mouse_move(int x, int y, t_package *pkg)
 
 void	fractal_driver(char *s)
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
+	void		*mlx_ptr;
+	void		*win_ptr;
 	t_mandel	*mainmandel;
 	t_colors	*palette;
-	t_package pkg;
+	t_package	pkg;
 
 	fill_colors(&palette);
 	mainmandel = main_mandel_init();

@@ -63,19 +63,19 @@ typedef struct	s_colors
 
 typedef struct	s_package
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
+	void		*mlx_ptr;
+	void		*win_ptr;
 	t_mandel	*mainmandel;
 	t_colors	*palette;
-	int		xmouse;
-	int		ymouse;
+	int			xmouse;
+	int			ymouse;
 }				t_package;
 
 double			map_to_real(int x, int imagewidth, double minr, double maxr);
 double			map_to_imaginary(int x, int imagewidth,
 					double mini, double maxi);
 int				ft_strcmp(char *s1, char *s2);
-t_mandel			*main_mandel_init();
+t_mandel		*main_mandel_init();
 void			key_driver(int key, void *pkg, void (*f)(void *mlx_ptr,
 					void *win_ptr, t_mandel *mand, t_colors *palette));
 int				key_press(int key, void *pkg);
@@ -89,7 +89,8 @@ void			(*f)(void *mlx_ptr, void *win_ptr, t_mandel *mand,
 void			key_driver4(int key, void *pkg,
 void			(*f)(void *mlx_ptr, void *win_ptr, t_mandel *mand,
 					t_colors *palette));
-int				findjulia(double a, double b, int max_iterations, t_mandel *mand);
+int				findjulia(double a, double b,
+					int max_iterations, t_mandel *mand);
 int				findburningship(double cr, double ci, int max_iterations);
 void			burningship_driver(void *mlx_ptr, void *win_ptr,
 					t_mandel *mand, t_colors *p);

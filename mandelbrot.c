@@ -47,7 +47,8 @@ int		is_in_mandelbrot(t_mandel *mand, int x, int y)
 	return (n);
 }
 
-void	mandelbrot_driver(void *mlx_ptr, void *win_ptr, t_mandel *mand, t_colors *p)
+void	mandelbrot_driver(void *mlx_ptr, void *win_ptr,
+	t_mandel *mand, t_colors *p)
 {
 	int rgb;
 	int x;

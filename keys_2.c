@@ -15,8 +15,8 @@
 void	key_driver5(int key, void *pkg,
 	void (*f)(void *mlx_ptr, void *win_ptr, t_mandel *mand, t_colors *palette))
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
+	void		*mlx_ptr;
+	void		*win_ptr;
 	t_mandel	*mainmandel;
 
 	mlx_ptr = ((t_package *)pkg)->mlx_ptr;
@@ -42,8 +42,8 @@ void	key_driver5(int key, void *pkg,
 void	key_driver4(int key, void *pkg,
 	void (*f)(void *mlx_ptr, void *win_ptr, t_mandel *mand, t_colors *palette))
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
+	void		*mlx_ptr;
+	void		*win_ptr;
 	t_mandel	*mainmandel;
 
 	mlx_ptr = ((t_package *)pkg)->mlx_ptr;

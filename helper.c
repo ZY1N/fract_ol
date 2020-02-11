@@ -12,7 +12,7 @@
 
 #include "fractol.h"
 
-double	map_to_real(int x, int imagewidth, double minr, double maxr)
+double		map_to_real(int x, int imagewidth, double minr, double maxr)
 {
 	double range;
 
@@ -20,7 +20,7 @@ double	map_to_real(int x, int imagewidth, double minr, double maxr)
 	return (x * (range / imagewidth) + minr);
 }
 
-double	map_to_imaginary(int x, int imagewidth, double mini, double maxi)
+double		map_to_imaginary(int x, int imagewidth, double mini, double maxi)
 {
 	double range;
 
@@ -28,7 +28,7 @@ double	map_to_imaginary(int x, int imagewidth, double mini, double maxi)
 	return (x * (range / imagewidth) + mini);
 }
 
-int		ft_strcmp(char *s1, char *s2)
+int			ft_strcmp(char *s1, char *s2)
 {
 	int i;
 
