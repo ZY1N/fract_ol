@@ -22,15 +22,19 @@ FILES = main.c mandelbrot.c keys.c keys_2.c julia.c helper2.c helper.c burningsh
 
 OBJ = $(FILES:.c=.o)
 
-all: $(NAME)
+all:	$(NAME)
 
-$(NAME)
+$(NAME):
 	@make re -C $(MINILIBX)
 	@gcc $(CFLAGS) -L $(MINILIBX) -I $(MINILIBX) -lmlx -framework OpenGL -framework Appkit $(FILES) -o $(NAME)
 
 clean:
 	@rm -f (OBJ)
+	@make clean -c $(MINILIBX)
 
 fclean:
+	@rm -f $(OBJ)
+	@rm -f $(NAME)
+	@make clean -C $(MINILIBX)
 
-re: fclean all
+re:	fclean all

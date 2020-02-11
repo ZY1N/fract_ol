@@ -61,5 +61,5 @@ int		main(int argc, char **argv)
 		fractal_driver(argv[1]);
 	}
 	else
-		write(1, "Usage: ./fractol Julia Mandelbrot OneMore\n", );
+		write(1, "Usage: ./fractol Julia Mandelbrot Burning Ship\n", 47);
 }
